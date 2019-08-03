@@ -3,9 +3,13 @@ module github.com/AntonBozhinov/techpodslearn
 go 1.12
 
 require (
+	github.com/azer/logger v1.0.0 // indirect
+	github.com/azer/yolo v0.0.0-20180819171155-df2a2bdacdd0 // indirect
+	github.com/fsnotify/fsnotify v1.4.7 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.4.0
 	github.com/golang/protobuf v1.3.2 // indirect
+	github.com/gorilla/websocket v1.4.0 // indirect
 	github.com/json-iterator/go v1.1.7 // indirect
 	github.com/mattn/go-isatty v0.0.8 // indirect
 	github.com/stretchr/objx v0.2.0 // indirect

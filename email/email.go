@@ -18,8 +18,8 @@ type Sender struct {
 	Password string
 }
 
-func NewSender(Username, Password string) Sender {
-	return Sender{Username, Password}
+func NewSender(Username, Password string) *Sender {
+	return &Sender{Username, Password}
 }
 
 func (sender Sender) SendMail(Dest []string, Subject, bodyMessage string) {
