@@ -20,4 +20,3 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func NewServer(router *gin.Engine, mongo *mgo.Database, emailSender *email.Sender) *Server {
 	return &Server{Router: router, Mongo: mongo, EmailSender: emailSender}
 }
-

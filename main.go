@@ -22,11 +22,15 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not establish db session: %v", err)
 	}
+	err = session.Ping()
+	if err != nil {
+		log.Fatalf("could not ping db: %v", err)
+	}
 	db := session.DB(mongoDb)
 
 	sender := email.NewSender(emailSender, emailPassword)
 
 	s := learning.NewServer(r, db, sender)
 	s.Modules()
-	log.Fatal(http.ListenAndServe(":" + port, s))
+	log.Fatal(http.ListenAndServe(":"+port, s))
 }
