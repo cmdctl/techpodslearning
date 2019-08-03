@@ -7,8 +7,8 @@ import (
 
 type User struct {
 	ID           bson.ObjectId `json:"id"bson:"_id,omitempty"`
-	Email        string        `json:"email"`
-	ProfileImage string        `json:"profile_image"`
-	Token        string        `json:"token"`
-	CreatedAt    time.Time     `json:"created_at"`
+	Email        string        `json:"email"bson:"email"`
+	ProfileImage string        `json:"profile_image"bson:"profile_image"`
+	Token        string        `json:"token"bson:"token"`
+	CreatedAt    time.Time     `json:"created_at"bson:"created_at"`
 }

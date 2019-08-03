@@ -8,7 +8,7 @@ import (
 type Module struct {
 	Repo        Repository
 	EmailSender email.Sender
-	Router *gin.Engine
+	Router      *gin.Engine
 }
 
 func NewModule(repo Repository, emailSender email.Sender, router *gin.Engine) *Module {
