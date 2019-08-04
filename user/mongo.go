@@ -54,7 +54,7 @@ func (m *mongoRepository) Delete(email string) error {
 	return err
 }
 
-func NewMongoRepository(DB *mgo.Database) *mongoRepository {
+func NewMongoRepository(DB *mgo.Database) Repository {
 	collection := DB.C(collectionName)
 	index := mgo.Index{
 		Key:        []string{"email"},

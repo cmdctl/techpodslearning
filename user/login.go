@@ -46,7 +46,7 @@ func (m *Module) LoginCallback(c *gin.Context) {
 			errors.HTTP(c.Writer, "could not create session jwt", http.StatusInternalServerError)
 			return
 		}
-		http.Redirect(c.Writer, c.Request, "/?token=" + token, http.StatusTemporaryRedirect)
+		authSuccess(c.Writer, c.Request, token)
 	} else {
 		_, err := m.Repo.Create(user)
 		if err != nil {
@@ -58,12 +58,20 @@ func (m *Module) LoginCallback(c *gin.Context) {
 			errors.HTTP(c.Writer, "could not create session jwt", http.StatusInternalServerError)
 			return
 		}
-		http.Redirect(c.Writer, c.Request, "/?token=" + token, http.StatusTemporaryRedirect)
+		authSuccess(c.Writer, c.Request, token)
 	}
 }
 
-func sendGreetingEmail() {
-
+func authSuccess(w http.ResponseWriter, r *http.Request, token string) {
+	exp := time.Now().AddDate(0,1,0)
+	cookie := &http.Cookie{
+		Name:       "techpods",
+		Value:      token,
+		Expires:    exp,
+		Path: "/",
+	}
+	http.SetCookie(w, cookie)
+	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 }
 
 func createJWT(user *User) (string, error) {
