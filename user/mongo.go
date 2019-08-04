@@ -15,12 +15,24 @@ type mongoRepository struct {
 	Collection *mgo.Collection
 }
 
+func (m *mongoRepository) Exist(email string) (bool, error) {
+	_, err := m.Read(email)
+	if err != nil {
+		if err == mgo.ErrNotFound {
+			return false, nil
+		} else {
+			return false, err
+		}
+	}
+	return true, nil
+}
+
 func (m *mongoRepository) Create(user *User) (id string, err error) {
 	err = m.Collection.Insert(user)
 	if err != nil {
 		return "", err
 	}
-	return user.ID.String(), nil
+	return user.ID.Hex(), nil
 }
 
 func (m *mongoRepository) Read(email string) (*User, error) {
@@ -42,7 +54,7 @@ func (m *mongoRepository) Delete(email string) error {
 	return err
 }
 
-func newMongoRepository(DB *mgo.Database) *mongoRepository {
+func NewMongoRepository(DB *mgo.Database) *mongoRepository {
 	collection := DB.C(collectionName)
 	index := mgo.Index{
 		Key:        []string{"email"},

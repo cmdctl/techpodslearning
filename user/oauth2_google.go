@@ -4,11 +4,12 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/base64"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"time"
@@ -19,7 +20,7 @@ var googleOauthConfig = &oauth2.Config{
 	RedirectURL:  "http://localhost:4000/auth/google/callback",
 	ClientID:     os.Getenv("GOOGLE_OAUTH_CLIENT_ID"),
 	ClientSecret: os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
-	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
+	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
 	Endpoint:     google.Endpoint,
 }
 
@@ -37,27 +38,23 @@ func OAuthGoogleLogin(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, u, http.StatusTemporaryRedirect)
 }
 
-func OAuthGoogleCallback(w http.ResponseWriter, r *http.Request) {
-	// Read oauthState from Cookie
+func OAuthGoogleCallback(w http.ResponseWriter, r *http.Request) (*GoogleUser, error) {
+	var user GoogleUser
 	oauthState, _ := r.Cookie("oauthstate")
 
 	if r.FormValue("state") != oauthState.Value {
-		log.Println("invalid oauth google state")
-		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-		return
+		return &user, errors.New("invalid oauth google state")
 	}
 
 	data, err := getUserDataFromGoogle(r.FormValue("code"))
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-		return
+		return &user, err
 	}
-
-	// GetOrCreate User in your db.
-	// Redirect or response with a token.
-	// More code .....
-	fmt.Fprintf(w, "UserInfo: %s\n", data)
+	err = json.Unmarshal(data, &user)
+	if err != nil {
+		return &user, err
+	}
+	return &user, nil
 }
 
 func generateStateOauthCookie(w http.ResponseWriter) string {

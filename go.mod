@@ -5,6 +5,7 @@ go 1.12
 require (
 	github.com/azer/logger v1.0.0 // indirect
 	github.com/azer/yolo v0.0.0-20180819171155-df2a2bdacdd0 // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fsnotify/fsnotify v1.4.7 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.4.0
