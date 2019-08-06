@@ -16,6 +16,7 @@ func main() {
 	emailSender := os.Getenv("EMAIL")
 	emailPassword := os.Getenv("EMAIL_PASSWORD")
 	port := os.Getenv("PORT")
+
 	r := gin.Default()
 
 	session, err := mgo.Dial(mongoConnectionString)
@@ -32,5 +33,6 @@ func main() {
 
 	s := learning.NewServer(r, db, sender)
 	s.Modules()
+	s.ServeStaticFiles()
 	log.Fatal(http.ListenAndServe(":"+port, s))
 }

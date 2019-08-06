@@ -63,12 +63,12 @@ func (m *Module) LoginCallback(c *gin.Context) {
 }
 
 func authSuccess(w http.ResponseWriter, r *http.Request, token string) {
-	exp := time.Now().AddDate(0,1,0)
+	exp := time.Now().AddDate(0, 1, 0)
 	cookie := &http.Cookie{
-		Name:       "techpods",
-		Value:      token,
-		Expires:    exp,
-		Path: "/",
+		Name:    "techpods",
+		Value:   token,
+		Expires: exp,
+		Path:    "/",
 	}
 	http.SetCookie(w, cookie)
 	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
