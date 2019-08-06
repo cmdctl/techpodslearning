@@ -32,6 +32,7 @@ func main() {
 	sender := email.NewSender(emailSender, emailPassword)
 
 	s := learning.NewServer(r, db, sender)
+	s.Cors()
 	s.Modules()
 	s.ServeStaticFiles()
 	log.Fatal(http.ListenAndServe(":"+port, s))

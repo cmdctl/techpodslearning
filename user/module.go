@@ -18,4 +18,5 @@ func NewModule(repo Repository, emailSender *email.Sender, router *gin.Engine) *
 func (m *Module) Route() {
 	m.Router.GET("/auth/google/login", m.Login)
 	m.Router.GET("/auth/google/callback", m.LoginCallback)
+	m.Router.GET("/api/me", Auth(), m.getCurrentUser)
 }

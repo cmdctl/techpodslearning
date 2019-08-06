@@ -2,7 +2,7 @@ package learning
 
 import (
 	"github.com/AntonBozhinov/techpodslearn/email"
-	"github.com/AntonBozhinov/techpodslearn/middleware"
+	"github.com/AntonBozhinov/techpodslearn/user"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/mgo.v2"
@@ -24,6 +24,5 @@ func NewServer(router *gin.Engine, mongo *mgo.Database, emailSender *email.Sende
 }
 
 func (s *Server) ServeStaticFiles() {
-	s.Router.Use(middleware.Protect(), static.Serve("/", static.LocalFile("www/build", true)))
+	s.Router.Use(user.Auth(), static.Serve("/", static.LocalFile("www/build", true)))
 }
-
